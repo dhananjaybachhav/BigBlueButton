@@ -11,6 +11,7 @@ import Button from '../button/component';
 import RecordingIndicator from './recording-indicator/container';
 import TalkingIndicatorContainer from '/imports/ui/components/nav-bar/talking-indicator/container';
 import SettingsDropdownContainer from './settings-dropdown/container';
+import EndMeetingConfirmationContainer from '/imports/ui/components/end-meeting-confirmation/container';
 
 
 const intlMessages = defineMessages({
@@ -79,6 +80,8 @@ class NavBar extends PureComponent {
       amIModerator,
     } = this.props;
 
+    const allowedToEndMeeting = amIModerator && !isBreakoutRoom;
+
 
     const toggleBtnClasses = {};
     toggleBtnClasses[styles.btn] = true;
@@ -112,6 +115,17 @@ class NavBar extends PureComponent {
               mountModal={mountModal}
               amIModerator={amIModerator}
             />
+            
+             {
+              allowedToEndMeeting && isMeteorConnected ?
+              (<Button 
+                  onClick={() => mountModal(<EndMeetingConfirmationContainer />)}
+                  label="End Meeting"
+                  className={styles.endMeeting}
+                />)
+                : null
+            }
+            
           </div>
           <div className={styles.right}>
             <SettingsDropdownContainer amIModerator={amIModerator} />
